@@ -12,13 +12,16 @@ public class CrosswordBoard {
     private int width;
     private int height;
     private CrosswordTemplate template;
-    private Map<Pair<Integer, Integer>, CrosswordDefinition> horizontalDefinitions;
-    private Map<Pair<Integer, Integer>, CrosswordDefinition> verticalDefinitions;
+    private CrosswordDefinitionMap horizontalDefinitions;
+    private CrosswordDefinitionMap verticalDefinitions;
 
     public CrosswordBoard(CrosswordTemplate template) {
         this.width = template.getWidth();
         this.height = template.getHeight();
         this.template = template;
+
+        horizontalDefinitions = new CrosswordDefinitionMap();
+        verticalDefinitions = new CrosswordDefinitionMap();
     }
 
     /**
@@ -29,7 +32,7 @@ public class CrosswordBoard {
      * @param horizontal
      * @return
      */
-    public boolean assign(CrosswordDefinition definition, int colRow, int index, boolean horizontal) {
+    public boolean assign(CrosswordDefinition definition, byte colRow, byte index, boolean horizontal) {
         if (!definition.isValid()) {
             return false;
         }
@@ -43,27 +46,27 @@ public class CrosswordBoard {
             return false;
         }
         if (horizontal) {
-            horizontalDefinitions.put(Pair.create(colRow, index), definition);
+            horizontalDefinitions.add(colRow, index, definition);
         }
         else {
-            verticalDefinitions.put(Pair.create(colRow, index), definition);
+            verticalDefinitions.add(colRow, index, definition);
         }
         return true;
     }
 
     /**
-     *
+     * retrieves a definition from the board
      * @param colRow
      * @param index
      * @param horizontal
      * @return
      */
-    public CrosswordDefinition getDefinition(int colRow, int index, boolean horizontal) {
+    public CrosswordDefinition getDefinition(byte colRow, byte index, boolean horizontal) {
         if (horizontal) {
-            return horizontalDefinitions.get(Pair.create(colRow, index));
+            return horizontalDefinitions.get(colRow, index);
         }
         else {
-            return verticalDefinitions.get(Pair.create(colRow, index));
+            return verticalDefinitions.get(colRow, index);
         }
     }
 
@@ -71,19 +74,19 @@ public class CrosswordBoard {
         return template;
     }
 
-    public Map<Pair<Integer, Integer>, CrosswordDefinition> getHorizontalDefinitions() {
+    public CrosswordDefinitionMap getHorizontalDefinitions() {
         return horizontalDefinitions;
     }
 
-    public void setHorizontalDefinitions(Map<Pair<Integer, Integer>, CrosswordDefinition> horizontalDefinitions) {
+    public void setHorizontalDefinitions(CrosswordDefinitionMap horizontalDefinitions) {
         this.horizontalDefinitions = horizontalDefinitions;
     }
 
-    public Map<Pair<Integer, Integer>, CrosswordDefinition> getVerticalDefinitions() {
+    public CrosswordDefinitionMap getVerticalDefinitions() {
         return verticalDefinitions;
     }
 
-    public void setVerticalDefinitions(Map<Pair<Integer, Integer>, CrosswordDefinition> verticalDefinitions) {
+    public void setVerticalDefinitions(CrosswordDefinitionMap verticalDefinitions) {
         this.verticalDefinitions = verticalDefinitions;
     }
 }

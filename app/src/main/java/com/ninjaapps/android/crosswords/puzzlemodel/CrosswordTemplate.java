@@ -7,62 +7,57 @@ import java.io.InputStream;
  */
 
 public class CrosswordTemplate {
-    private int width;
-    private int height;
+    private byte width;
+    private byte height;
     private char matrix[][];
 
     private static final char SEPARATOR = '#';
 
-    public static CrosswordTemplate fromInputStrem(InputStream stream) {
-        //TODO
-        return null;
-    }
-
-    public CrosswordTemplate(int width, int height) {
+    public CrosswordTemplate(byte width, byte height) {
         this.width = width;
         this.height = height;
         this.matrix = new char[width][height];
     }
 
-    public int getWidth() {
+    public byte getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public byte getHeight() {
         return height;
     }
 
-    public void setAt(int x, int y, char c) {
+    public void setAt(byte x, byte y, char c) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             matrix[x][y] = c;
         }
     }
 
-    public char getAt(int x, int y) {
+    public char getAt(byte x, byte y) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             return matrix[x][y];
         }
         return 0;
     }
 
-    public void setSeparator(int x, int y) {
+    public void setSeparator(byte x, byte y) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             matrix[x][y] = SEPARATOR;
         }
     }
 
-    public boolean isSeparator(int x, int y) {
+    public boolean isSeparator(byte x, byte y) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             return matrix[x][y] == SEPARATOR;
         }
         return false;
     }
 
-    private int getAvailableFrom(int x, int y, boolean horizontal) {
+    private int getAvailableFrom(byte x, byte y, boolean horizontal) {
         if (isSeparator(x, y)) {
             return 0;
         }
-        int i;
+        byte i;
         if (horizontal) {
             for (i = x; i < width && !isSeparator(i, y); ++i);
             return i - x;
@@ -73,12 +68,12 @@ public class CrosswordTemplate {
         }
     }
 
-    private int getCoordinate(int colRow, int index, boolean horizontal) {
-        int start = 0;
-        int count = 0;
+    private int getCoordinate(byte colRow, byte index, boolean horizontal) {
+        byte start = 0;
+        byte count = 0;
         while (start < (horizontal ? width : height)) {
-            int x = horizontal ? start : colRow;
-            int y = horizontal ? colRow : start;
+            byte x = horizontal ? start : colRow;
+            byte y = horizontal ? colRow : start;
             int available = getAvailableFrom(x, y, horizontal);
 
             //separator (or end)
@@ -104,12 +99,12 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public int getAvailableCount(int colRow, boolean horizontal) {
-        int start = 0;
-        int count = 0;
+    public int getAvailableCount(byte colRow, boolean horizontal) {
+        byte start = 0;
+        byte count = 0;
         while (start < (horizontal ? width : height)) {
-            int x = horizontal ? start : colRow;
-            int y = horizontal ? colRow : start;
+            byte x = horizontal ? start : colRow;
+            byte y = horizontal ? colRow : start;
             int available = getAvailableFrom(x, y, horizontal);
 
             //separator (or end)
@@ -133,7 +128,7 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public boolean setWord(String word, int colRow, int index, boolean horizontal) {
+    public boolean setWord(String word, byte colRow, byte index, boolean horizontal) {
         int coord = getCoordinate(colRow, index, horizontal);
         boolean success = true;
         for (int i = 0; i < word.length(); ++i) {
