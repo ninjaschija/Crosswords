@@ -58,6 +58,16 @@ public class CrosswordBoard {
         return horizontal ? horizontalDefinitions.get(x, y) : verticalDefinitions.get(x, y);
     }
 
+    /**
+     * makes the word starting at (x, y) visible on the board
+     * @param x
+     * @param y
+     * @param horizontal
+     */
+    public void reveal(byte x, byte y, boolean horizontal) {
+        //TODO
+    }
+
     public CrosswordTemplate getTemplate() {
         return template;
     }

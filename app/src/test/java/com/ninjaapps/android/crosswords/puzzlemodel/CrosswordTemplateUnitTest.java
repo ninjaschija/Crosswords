@@ -252,4 +252,68 @@ public class CrosswordTemplateUnitTest {
         assertEquals(0, template.getAvailableCount((byte)(width + 1), true));
         assertEquals(0, template.getAvailableCount((byte)(height + 1), false));
     }
+
+    @Test
+    public void setWord_positive() throws Exception {
+        byte width = 5;
+        byte height = 5;
+
+        /*
+        f a r t #
+        o # a r c
+        r e # u a
+        k # s e n
+        s n o r e
+        */
+
+        CrosswordTemplate template = new CrosswordTemplate(width, height);
+        template.setSeparator((byte) 4, (byte) 0);
+        template.setSeparator((byte) 1, (byte) 1);
+        template.setSeparator((byte) 2, (byte) 2);
+        template.setSeparator((byte) 1, (byte) 3);
+
+        assertTrue(template.setWord("fart", (byte)0, (byte)0, true));
+        assertTrue(template.setWord("arc", (byte)2, (byte)1, true));
+        assertTrue(template.setWord("re", (byte)0, (byte)2, true));
+        assertTrue(template.setWord("ua", (byte)3, (byte)2, true));
+        assertTrue(template.setWord("sen", (byte)2, (byte)3, true));
+        assertTrue(template.setWord("snore", (byte)0, (byte)4, true));
+
+        assertTrue(template.setWord("forks", (byte)0, (byte)0, false));
+        assertTrue(template.setWord("ra", (byte)2, (byte)0, false));
+        assertTrue(template.setWord("so", (byte)2, (byte)3, false));
+        assertTrue(template.setWord("truer", (byte)3, (byte)0, false));
+        assertTrue(template.setWord("cane", (byte)4, (byte)1, false));
+    }
+
+    @Test
+    public void setWord_negative() throws Exception {
+        byte width = 5;
+        byte height = 5;
+
+        /*
+        f a r t #
+        o # a r c
+        r e # u a
+        k # s e n
+        s n o r e
+        */
+
+        CrosswordTemplate template = new CrosswordTemplate(width, height);
+        template.setSeparator((byte) 4, (byte) 0);
+        template.setSeparator((byte) 1, (byte) 1);
+        template.setSeparator((byte) 2, (byte) 2);
+        template.setSeparator((byte) 1, (byte) 3);
+
+        assertTrue(template.setWord("fart", (byte) 0, (byte) 0, true));
+        assertTrue(template.setWord("arc", (byte) 2, (byte) 1, true));
+        assertTrue(template.setWord("re", (byte) 0, (byte) 2, true));
+        assertTrue(template.setWord("ua", (byte) 3, (byte) 2, true));
+        assertTrue(template.setWord("sen", (byte) 2, (byte) 3, true));
+        assertTrue(template.setWord("snore", (byte) 0, (byte) 4, true));
+
+        assertFalse(template.setWord("nonsense", (byte)0, (byte)0, false));
+        assertFalse(template.setWord("forks", (byte)0, (byte)1, false));
+        assertFalse(template.setWord("test", (byte)1, (byte)0, false));
+    }
 }
