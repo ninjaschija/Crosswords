@@ -29,7 +29,7 @@ public class CrosswordBoardStreamHeader {
             return false;
         }
 
-        if ((buffer[0] << 8) + buffer[1] != SIGNATURE) {
+        if (buffer[0] != (byte)(SIGNATURE >> 8) || buffer[1] != (byte)SIGNATURE) {
             return false;
         }
 
