@@ -1,7 +1,6 @@
 package com.ninjaapps.android.crosswords.puzzlemodel;
 
-import android.util.Pair;
-
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -11,21 +10,26 @@ import java.util.Set;
  */
 
 public class CrosswordDefinitionMap {
-    private Map<Pair<Byte, Byte>, CrosswordDefinition> definitions;
+    //Use Map.Entry as replacement for Pair class in android.util
+    private Map<Map.Entry<Integer, Integer>, CrosswordDefinition> definitions;
 
     public CrosswordDefinitionMap() {
         definitions = new HashMap<>();
     }
 
-    public void add(byte x, byte y, CrosswordDefinition definition) {
-        definitions.put(Pair.create(x, y), definition);
+    public void add(int x, int y, CrosswordDefinition definition) {
+        definitions.put(new AbstractMap.SimpleEntry<>(x, y), definition);
     }
 
-    public CrosswordDefinition get(byte x, byte y) {
-        return definitions.get(Pair.create(x, y));
+    public CrosswordDefinition get(int x, int y) {
+        return definitions.get(new AbstractMap.SimpleEntry<>(x, y));
     }
 
-    public Set<Pair<Byte, Byte>> getAllKeys() {
+    public CrosswordDefinition get(Map.Entry<Integer, Integer> entry) {
+        return definitions.get(entry);
+    }
+
+    public Set<Map.Entry<Integer, Integer>> getAllKeys() {
         return definitions.keySet();
     }
 }

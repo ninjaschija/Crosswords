@@ -8,6 +8,7 @@ public class CrosswordBoard {
     private int width;
     private int height;
     private CrosswordTemplate template;
+    private CrosswordMask visibleMask;
     private CrosswordDefinitionMap horizontalDefinitions;
     private CrosswordDefinitionMap verticalDefinitions;
 
@@ -16,6 +17,7 @@ public class CrosswordBoard {
         this.height     = template.getHeight();
         this.template   = template;
 
+        visibleMask             = new CrosswordMask(width, height);
         horizontalDefinitions   = new CrosswordDefinitionMap();
         verticalDefinitions     = new CrosswordDefinitionMap();
     }
@@ -28,7 +30,7 @@ public class CrosswordBoard {
      * @param horizontal
      * @return
      */
-    public boolean assign(CrosswordDefinition definition, byte x, byte y, boolean horizontal) {
+    public boolean assignDefinition(CrosswordDefinition definition, int x, int y, boolean horizontal) {
         if (!definition.isValid()) {
             return false;
         }
@@ -54,18 +56,57 @@ public class CrosswordBoard {
      * @param horizontal
      * @return
      */
-    public CrosswordDefinition getDefinition(byte x, byte y, boolean horizontal) {
-        return horizontal ? horizontalDefinitions.get(x, y) : verticalDefinitions.get(x, y);
+    public CrosswordDefinition getDefinition(int x, int y, boolean horizontal) {
+        int start = template.getStartPoint(x, y, horizontal);
+        if (start == -1) {
+            return null;
+        }
+        int startX = horizontal ? start : x;
+        int startY = horizontal ? y : start;
+        return horizontal ?
+                horizontalDefinitions.get(startX, startY) :
+                verticalDefinitions.get(startX, startY);
     }
 
     /**
-     * makes the word starting at (x, y) visible on the board
+     * makes the word containing (x, y) visible on the board
      * @param x
      * @param y
      * @param horizontal
      */
-    public void reveal(byte x, byte y, boolean horizontal) {
-        //TODO
+    public void revealSolution(int x, int y, boolean horizontal) {
+        int start = template.getStartPoint(x, y, horizontal);
+        if (start == -1) {
+            return;
+        }
+        int startX = horizontal ? start : x;
+        int startY = horizontal ? y : start;
+        int available = template.getAvailableFrom(startX, startY, horizontal);
+
+        for (int i = 0; i < available; ++i) {
+            if (horizontal) {
+                visibleMask.setVisible(startX + i, startY, true);
+            }
+            else {
+                visibleMask.setVisible(startX, startY + i, true);
+            }
+        }
+    }
+
+    /**
+     * retrieves the board tile at (x, y)
+     * @param x
+     * @param y
+     * @return 1 for separator, 0 for unrevealed tile, or the character for revealed tile
+     */
+    public int getBoardTile(int x, int y) {
+        if (template.isSeparator(x, y)) {
+            return 1;
+        }
+        if (!visibleMask.isVisible(x, y)) {
+            return 0;
+        }
+        return (int)template.getAt(x, y);
     }
 
     public CrosswordTemplate getTemplate() {
@@ -86,5 +127,13 @@ public class CrosswordBoard {
 
     public void setVerticalDefinitions(CrosswordDefinitionMap verticalDefinitions) {
         this.verticalDefinitions = verticalDefinitions;
+    }
+
+    public CrosswordMask getVisibleMask() {
+        return visibleMask;
+    }
+
+    public void setVisibleMask(CrosswordMask visibleMask) {
+        this.visibleMask = visibleMask;
     }
 }

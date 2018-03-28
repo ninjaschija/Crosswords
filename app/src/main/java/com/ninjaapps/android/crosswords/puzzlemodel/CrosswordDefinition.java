@@ -8,7 +8,7 @@ public class CrosswordDefinition {
     private String definition;
     private String solution;
 
-    CrosswordDefinition(String definition, String solution) {
+    public CrosswordDefinition(String definition, String solution) {
         this.definition = definition;
         this.solution = solution;
     }

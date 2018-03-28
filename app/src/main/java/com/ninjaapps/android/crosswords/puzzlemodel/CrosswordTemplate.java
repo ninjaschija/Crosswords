@@ -5,50 +5,50 @@ package com.ninjaapps.android.crosswords.puzzlemodel;
  */
 
 public class CrosswordTemplate {
-    private byte width;
-    private byte height;
+    private int width;
+    private int height;
     private char matrix[][];
 
     private static final char SEPARATOR = '#';
 
-    public CrosswordTemplate(byte width, byte height) {
+    public CrosswordTemplate(int width, int height) {
         this.width = width;
         this.height = height;
         this.matrix = new char[width][height];
     }
 
-    public byte getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public byte getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    private boolean isWithinBounds(byte x, byte y) {
+    private boolean isWithinBounds(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    public void setAt(byte x, byte y, char c) {
+    public void setAt(int x, int y, char c) {
         if (isWithinBounds(x, y)) {
             matrix[x][y] = c;
         }
     }
 
-    public char getAt(byte x, byte y) {
+    public char getAt(int x, int y) {
         if (isWithinBounds(x, y)) {
             return matrix[x][y];
         }
         return 0;
     }
 
-    public void setSeparator(byte x, byte y) {
+    public void setSeparator(int x, int y) {
         if (isWithinBounds(x, y)) {
             matrix[x][y] = SEPARATOR;
         }
     }
 
-    public boolean isSeparator(byte x, byte y) {
+    public boolean isSeparator(int x, int y) {
         if (isWithinBounds(x, y)) {
             return matrix[x][y] == SEPARATOR;
         }
@@ -62,18 +62,18 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public byte getAvailableFrom(byte x, byte y, boolean horizontal) {
+    public int getAvailableFrom(int x, int y, boolean horizontal) {
         if (isSeparator(x, y) || !isWithinBounds(x, y)) {
             return 0;
         }
-        byte i;
+        int i;
         if (horizontal) {
             for (i = x; i < width && !isSeparator(i, y); ++i);
-            return (byte)(i - x);
+            return (int)(i - x);
         }
         else {
             for (i = y; i < height && !isSeparator(x, i); ++i);
-            return (byte)(i - y);
+            return (int)(i - y);
         }
     }
 
@@ -84,18 +84,18 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public byte getStartPoint(byte x, byte y, boolean horizontal) {
+    public int getStartPoint(int x, int y, boolean horizontal) {
         if (isSeparator(x, y) || !isWithinBounds(x, y)) {
             return -1;
         }
         if (horizontal) {
-            byte startX;
-            for (startX = x; startX > 0 && !isSeparator((byte)(startX - 1), y); --startX);
+            int startX;
+            for (startX = x; startX > 0 && !isSeparator((int)(startX - 1), y); --startX);
             return startX;
         }
         else {
-            byte startY;
-            for (startY = y; startY > 0 && !isSeparator(x, (byte)(startY - 1)); --startY);
+            int startY;
+            for (startY = y; startY > 0 && !isSeparator(x, (int)(startY - 1)); --startY);
             return startY;
         }
     }
@@ -106,12 +106,12 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public byte getAvailableCount(byte colRow, boolean horizontal) {
-        byte start = 0;
-        byte count = 0;
+    public int getAvailableCount(int colRow, boolean horizontal) {
+        int start = 0;
+        int count = 0;
         while (start < (horizontal ? width : height)) {
-            byte x = horizontal ? start : colRow;
-            byte y = horizontal ? colRow : start;
+            int x = horizontal ? start : colRow;
+            int y = horizontal ? colRow : start;
             int available = getAvailableFrom(x, y, horizontal);
             //separator (or end)
             if (available == 0) {
@@ -133,7 +133,7 @@ public class CrosswordTemplate {
      * @param horizontal
      * @return
      */
-    public boolean setWord(String word, byte x, byte y, boolean horizontal) {
+    public boolean setWord(String word, int x, int y, boolean horizontal) {
         if (!isWithinBounds(x, y)) {
             return false;
         }

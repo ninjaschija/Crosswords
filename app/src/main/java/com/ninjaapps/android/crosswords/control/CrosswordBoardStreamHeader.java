@@ -12,14 +12,14 @@ public class CrosswordBoardStreamHeader {
     private byte[] buffer;
 
     private byte version;
-    private byte boardWidth;
-    private byte boardHeight;
+    private int boardWidth;
+    private int boardHeight;
 
     public CrosswordBoardStreamHeader(byte[] buffer) {
         this.buffer = buffer;
     }
 
-    public CrosswordBoardStreamHeader(byte boardWidth, byte boardHeight) {
+    public CrosswordBoardStreamHeader(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
     }
@@ -45,8 +45,8 @@ public class CrosswordBoardStreamHeader {
         buffer[0] = (byte)(SIGNATURE >> 8);
         buffer[1] = (byte)SIGNATURE;
         buffer[2] = VERSION;
-        buffer[3] = boardWidth;
-        buffer[4] = boardHeight;
+        buffer[3] = (byte)boardWidth;
+        buffer[4] = (byte)boardHeight;
         return buffer;
     }
 
@@ -58,11 +58,11 @@ public class CrosswordBoardStreamHeader {
         return version;
     }
 
-    public byte getBoardWidth() {
+    public int getBoardWidth() {
         return boardWidth;
     }
 
-    public byte getBoardHeight() {
+    public int getBoardHeight() {
         return boardHeight;
     }
 }
