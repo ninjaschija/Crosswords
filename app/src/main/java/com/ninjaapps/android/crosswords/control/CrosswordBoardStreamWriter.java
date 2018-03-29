@@ -5,6 +5,7 @@ import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordDefinition;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordDefinitionMap;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordMask;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordTemplate;
+import com.ninjaapps.android.crosswords.puzzlemodel.IntPair;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -75,17 +76,17 @@ public class CrosswordBoardStreamWriter {
     }
 
     private boolean writeDefinitions(CrosswordDefinitionMap definitions, OutputStream stream) {
-        Set<Map.Entry<Integer, Integer>> keySet = definitions.getAllKeys();
+        Set<IntPair> keySet = definitions.getAllKeys();
         try {
             stream.write((byte)keySet.size());
         } catch (IOException e) {
             return false;
         }
-        for (Map.Entry<Integer, Integer> entry: keySet) {
+        for (IntPair entry: keySet) {
             CrosswordDefinition definition = definitions.get(entry);
             try {
-                int x = entry.getKey();
-                int y = entry.getValue();
+                int x = entry.getX();
+                int y = entry.getY();
                 stream.write((byte)x);
                 stream.write((byte)y);
                 if (!writeDefinition(definition, stream)) {

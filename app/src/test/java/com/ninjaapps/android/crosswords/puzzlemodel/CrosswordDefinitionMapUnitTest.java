@@ -76,12 +76,12 @@ public class CrosswordDefinitionMapUnitTest {
         map.add(2, 2, def2);
         map.add(3, 3, def3);
 
-        assertEquals("def1", map.get(new AbstractMap.SimpleEntry<>(1, 1)).getDefinition());
-        assertEquals("def2", map.get(new AbstractMap.SimpleEntry<>(2, 2)).getDefinition());
-        assertEquals("def3", map.get(new AbstractMap.SimpleEntry<>(3, 3)).getDefinition());
+        assertEquals("def1", map.get(new IntPair(1, 1)).getDefinition());
+        assertEquals("def2", map.get(new IntPair(2, 2)).getDefinition());
+        assertEquals("def3", map.get(new IntPair(3, 3)).getDefinition());
 
-        assertEquals("sol1", map.get(new AbstractMap.SimpleEntry<>(1, 1)).getSolution());
-        assertEquals("sol2", map.get(new AbstractMap.SimpleEntry<>(2, 2)).getSolution());
-        assertEquals("sol3", map.get(new AbstractMap.SimpleEntry<>(3, 3)).getSolution());
+        assertEquals("sol1", map.get(new IntPair(1, 1)).getSolution());
+        assertEquals("sol2", map.get(new IntPair(2, 2)).getSolution());
+        assertEquals("sol3", map.get(new IntPair(3, 3)).getSolution());
     }
 }

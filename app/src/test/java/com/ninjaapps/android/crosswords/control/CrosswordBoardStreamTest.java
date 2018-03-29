@@ -3,6 +3,7 @@ package com.ninjaapps.android.crosswords.control;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordBoard;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordDefinition;
 import com.ninjaapps.android.crosswords.puzzlemodel.CrosswordTemplate;
+import com.ninjaapps.android.crosswords.puzzlemodel.IntPair;
 
 import org.junit.Test;
 
@@ -79,18 +80,18 @@ public class CrosswordBoardStreamTest {
         assertEquals(board.getHorizontalDefinitions().getAllKeys().size(), decodedBoard.getHorizontalDefinitions().getAllKeys().size());
         assertEquals(board.getVerticalDefinitions().getAllKeys().size(), decodedBoard.getVerticalDefinitions().getAllKeys().size());
 
-        for (Map.Entry<Integer, Integer> entry: board.getHorizontalDefinitions().getAllKeys()) {
+        for (IntPair entry: board.getHorizontalDefinitions().getAllKeys()) {
             CrosswordDefinition boardDef = board.getHorizontalDefinitions().get(entry);
-            CrosswordDefinition decodedBoardDef = decodedBoard.getDefinition(entry.getKey(), entry.getValue(), true);
+            CrosswordDefinition decodedBoardDef = decodedBoard.getDefinition(entry.getX(), entry.getY(), true);
 
             assertNotEquals(null, decodedBoardDef);
             assertEquals(boardDef.getDefinition(), decodedBoardDef.getDefinition());
             assertEquals(boardDef.getSolution(), decodedBoardDef.getSolution());
         }
 
-        for (Map.Entry<Integer, Integer> entry: board.getVerticalDefinitions().getAllKeys()) {
+        for (IntPair entry: board.getVerticalDefinitions().getAllKeys()) {
             CrosswordDefinition boardDef = board.getVerticalDefinitions().get(entry);
-            CrosswordDefinition decodedBoardDef = decodedBoard.getDefinition(entry.getKey(), entry.getValue(), false);
+            CrosswordDefinition decodedBoardDef = decodedBoard.getDefinition(entry.getX(), entry.getY(), false);
 
             assertNotEquals(null, decodedBoardDef);
             assertEquals(boardDef.getDefinition(), decodedBoardDef.getDefinition());
