@@ -109,6 +109,14 @@ public class CrosswordBoard {
         return (int)template.getAt(x, y);
     }
 
+    public boolean isSeparator(int x, int y) {
+        return template.isSeparator(x, y);
+    }
+
+    public boolean isRevealed(int x, int y) {
+        return visibleMask.isVisible(x, y);
+    }
+
     public CrosswordTemplate getTemplate() {
         return template;
     }
